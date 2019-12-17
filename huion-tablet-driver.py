@@ -439,6 +439,21 @@ def main_loop():
                     TILT_Y = 0 - data[11] # invert Y tilt axis
                 except:
                     TILT_Y = 0
+                    
+                # compensate positons with tild
+                pen_sensor_lenght = 100
+                if(TILT_X > 100):
+                    pen_sensor_lenght = 300
+                    X = X + int(pen_sensor_lenght*atan(TILT_X*1.40625))
+                else: 
+                    X = X - int(pen_sensor_lenght*atan(TILT_X*1.40625))
+                if(abs(TILT_Y) > 100):
+                    pen_sensor_lenght = 50
+                    Y = Y - int(pen_sensor_lenght*atan(abs(TILT_Y*1.40625)))
+                else: 
+                    pen_sensor_lenght = 50
+                    Y = Y + int(pen_sensor_lenght*atan(abs(TILT_Y*1.40625)))
+
 
                 main.vpen.write(ecodes.EV_ABS, ecodes.ABS_X, X)
                 main.vpen.write(ecodes.EV_ABS, ecodes.ABS_Y, Y)
